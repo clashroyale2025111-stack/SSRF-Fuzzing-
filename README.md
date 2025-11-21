@@ -1,5 +1,5 @@
 # SSRF-Fuzzing-
-A Python SSRF fuzzing tool that automatically tests 93 unique SSRF payloads against a target endpoint.
+A Python SSRF fuzzing tool that automatically tests unique SSRF payloads against a target endpoint.
 The fuzzer appends each payload using the format /?url=(payload) and sends the request to observe how the server responds.
 Every result is returned in a structured dictionary containing the payload used, the full test URL, the status code, response length, and any notes for abnormal behavior.
 
